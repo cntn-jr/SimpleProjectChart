@@ -12,13 +12,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/index.js') }}" defer></script>
-
-    <style>
-        *{
-            margin: 0;
-            padding: 0;
-        }
-    </style>
 </head>
 
 <body>
