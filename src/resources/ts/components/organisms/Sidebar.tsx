@@ -1,7 +1,21 @@
-import { MenuItem, MenuList, Stack } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import {
+    createTheme,
+    MenuItem,
+    MenuItemProps,
+    MenuList,
+    Stack,
+    ThemeProvider,
+} from "@mui/material";
+import { blue, grey } from "@mui/material/colors";
+import { styled } from "@mui/system";
+import { useMatch, useNavigate } from "react-router-dom";
 import { AfterLoginRouter } from "../../router/AfterLoginRouter";
 import { BeforeLoginRouter } from "../../router/BeforeLoginRouter";
+
+const SidebarMenuItem = styled(MenuItem)<MenuItemProps>(({ selected }) => ({
+    height: "80px",
+    color: selected ? blue[300] : grey[800],
+}));
 
 export const Sidebar = () => {
     const navigate = useNavigate();
@@ -9,27 +23,34 @@ export const Sidebar = () => {
     const onClickMenu = (path: string) => {
         navigate(path);
     };
+    const isSelectRoute = (path: string) => {
+        if (useMatch(`/${path}`)) {
+            return true;
+        }
+        return false;
+    };
+
     return (
         <Stack direction="row" mt="10px">
             <MenuList sx={{ width: "100%" }}>
                 {authentication
                     ? AfterLoginRouter.map((router) => (
-                          <MenuItem
+                          <SidebarMenuItem
                               key={router.path}
-                              sx={{ height: "100px" }}
                               onClick={() => onClickMenu(router.path)}
+                              selected={isSelectRoute(router.path)}
                           >
                               {router.name}
-                          </MenuItem>
+                          </SidebarMenuItem>
                       ))
                     : BeforeLoginRouter.map((router) => (
-                          <MenuItem
+                          <SidebarMenuItem
                               key={router.path}
-                              sx={{ height: "100px" }}
                               onClick={() => onClickMenu(router.path)}
+                              selected={isSelectRoute(router.path)}
                           >
                               {router.name}
-                          </MenuItem>
+                          </SidebarMenuItem>
                       ))}
             </MenuList>
         </Stack>
